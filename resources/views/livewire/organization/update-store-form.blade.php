@@ -75,6 +75,63 @@
         </div>
     {{-- @endif --}}
 
+    @if ($team->users->isNotEmpty())
+        <x-jet-section-border />
+
+        <!-- Manage Team Members -->
+        <div class="mt-10 sm:mt-0">
+            <x-jet-action-section>
+                <x-slot name="title">
+                    {{ __('Team Members') }}
+                </x-slot>
+
+                <x-slot name="description">
+                    {{ __('All of the people that are part of this team.') }}
+                </x-slot>
+
+                <!-- Team Member List -->
+                <x-slot name="content">
+                    <div class="space-y-6">
+                        @foreach ($team->users->sortBy('name') as $user)
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <img class="w-8 h-8 rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}">
+                                    <div class="ml-4">{{ $user->name }}</div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <!-- Manage Team Member Role -->
+                                    @if (Gate::check('addTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
+                                        <button class="ml-2 text-sm text-gray-400 underline" wire:click="manageRole('{{ $user->id }}')">
+                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
+                                        </button>
+                                    @elseif (Laravel\Jetstream\Jetstream::hasRoles())
+                                        <div class="ml-2 text-sm text-gray-400">
+                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
+                                        </div>
+                                    @endif
+
+                                    <!-- Leave Team -->
+                                    @if ($this->user->id === $user->id)
+                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="$toggle('confirmingLeavingTeam')">
+                                            {{ __('Leave') }}
+                                        </button>
+
+                                    <!-- Remove Team Member -->
+                                    @elseif (Gate::check('removeTeamMember', $team))
+                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmTeamMemberRemoval('{{ $user->id }}')">
+                                            {{ __('Remove') }}
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </x-slot>
+            </x-jet-action-section>
+        </div>
+    @endif
+
     {{-- @if ($team->teamInvitations->isNotEmpty() && Gate::check('addTeamMember', $team))
         <x-jet-section-border />
 

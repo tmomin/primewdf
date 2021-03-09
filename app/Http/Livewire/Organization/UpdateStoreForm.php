@@ -14,6 +14,14 @@ class UpdateStoreForm extends Component
         'name' => '',
     ];
 
+    public $stores;
+
+    public function mount()
+    {
+        $this->store = Auth::user()->organization;
+        dd($this->store->stores);
+    }
+
     public function addStore(Request $request)
     {
         $this->resetErrorBag();
@@ -26,6 +34,8 @@ class UpdateStoreForm extends Component
             'name' => $this->addStoreForm['name'],
             'organization_id' => Auth::user()->organization_id,
         ]);
+
+        $this->addStoreForm['name'] = '';
     }
     
     public function render()
