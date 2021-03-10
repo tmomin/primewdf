@@ -15,11 +15,21 @@ class UpdateStoreForm extends Component
     ];
 
     public $stores;
+    public $organization;
+    public $storeIdBeingRemoved = null;
+
+    /**
+     * Indicates if the application is confirming if a team member should be removed.
+     *
+     * @var bool
+     */
+    public $confirmingStoreRemoval = false;
 
     public function mount()
     {
         $this->store = Auth::user()->organization;
-        dd($this->store->stores);
+        $this->organization = Auth::user()->organization;
+        // dd($this->store->stores);
     }
 
     public function addStore(Request $request)
@@ -36,6 +46,43 @@ class UpdateStoreForm extends Component
         ]);
 
         $this->addStoreForm['name'] = '';
+
+        $this->organization = $this->organization->fresh();
+
+        // $this->emit('saved');
+
+        // return redirect()->route('organization.show');
+    }
+
+    public function confirmStoreRemoval($storeId)
+    {
+        $this->confirmingStoreRemoval = true;
+
+        $this->storeIdBeingRemoved = $storeId;
+    }
+
+    /**
+     * Remove a team member from the team.
+     *
+     * @param  \Laravel\Jetstream\Contracts\RemovesTeamMembers  $remover
+     * @return void
+     */
+    public function removeStore($storeId)
+    {
+        $store = Store::find($storeId);
+        $store->delete();
+               
+        // $remover->remove(
+        //     $this->user,
+        //     $this->team,
+        //     $user = Jetstream::findUserByIdOrFail($this->teamMemberIdBeingRemoved)
+        // );
+
+        $this->confirmingStoreRemoval = false;
+
+        $this->storeIdBeingRemoved = null;
+
+        $this->organization = $this->organization->fresh();
     }
     
     public function render()

@@ -1,6 +1,6 @@
 <div>
     {{-- @if (Gate::check('addTeamMember', $team)) --}}
-        <x-jet-section-border />
+        {{-- <x-jet-section-border /> --}}
 
         <!-- Add Store -->
         <div class="mt-10 sm:mt-0">
@@ -75,32 +75,32 @@
         </div>
     {{-- @endif --}}
 
-    @if ($team->users->isNotEmpty())
+    @if ($organization->stores->isNotEmpty())
         <x-jet-section-border />
 
-        <!-- Manage Team Members -->
+        <!-- Manage Stores -->
         <div class="mt-10 sm:mt-0">
             <x-jet-action-section>
                 <x-slot name="title">
-                    {{ __('Team Members') }}
+                    {{ __('Stores') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('All of the people that are part of this team.') }}
+                    {{ __('All of the stores that are part of this organization.') }}
                 </x-slot>
 
-                <!-- Team Member List -->
+                <!-- Store List -->
                 <x-slot name="content">
                     <div class="space-y-6">
-                        @foreach ($team->users->sortBy('name') as $user)
+                        @foreach ($organization->stores->sortBy('name') as $store)
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <img class="w-8 h-8 rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}">
-                                    <div class="ml-4">{{ $user->name }}</div>
+                                    {{-- <img class="w-8 h-8 rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}"> --}}
+                                    <div class="ml-4">{{ $store->name }}</div>
                                 </div>
 
                                 <div class="flex items-center">
-                                    <!-- Manage Team Member Role -->
+                                    {{-- <!-- Manage Team Member Role -->
                                     @if (Gate::check('addTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
                                         <button class="ml-2 text-sm text-gray-400 underline" wire:click="manageRole('{{ $user->id }}')">
                                             {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
@@ -109,20 +109,12 @@
                                         <div class="ml-2 text-sm text-gray-400">
                                             {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
                                         </div>
-                                    @endif
+                                    @endif --}}
 
-                                    <!-- Leave Team -->
-                                    @if ($this->user->id === $user->id)
-                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="$toggle('confirmingLeavingTeam')">
-                                            {{ __('Leave') }}
-                                        </button>
-
-                                    <!-- Remove Team Member -->
-                                    @elseif (Gate::check('removeTeamMember', $team))
-                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmTeamMemberRemoval('{{ $user->id }}')">
+                                    
+                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmStoreRemoval('{{ $store->id }}')">
                                             {{ __('Remove') }}
                                         </button>
-                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -291,22 +283,22 @@
         </x-slot>
     </x-jet-confirmation-modal>
 
-    <!-- Remove Team Member Confirmation Modal -->
-    <x-jet-confirmation-modal wire:model="confirmingTeamMemberRemoval">
+    <!-- Remove Store Confirmation Modal -->
+    <x-jet-confirmation-modal wire:model="confirmingStoreRemoval">
         <x-slot name="title">
-            {{ __('Remove Team Member') }}
+            {{ __('Remove Store') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you would like to remove this person from the team?') }}
+            {{ __('Are you sure you would like to remove this store from the organzition?') }}
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingTeamMemberRemoval')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingStoreRemoval')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="removeTeamMember" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="removeStore('{{ $storeIdBeingRemoved }}')" wire:loading.attr="disabled">
                 {{ __('Remove') }}
             </x-jet-danger-button>
         </x-slot>
