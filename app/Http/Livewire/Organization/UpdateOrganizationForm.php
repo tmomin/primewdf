@@ -29,7 +29,7 @@ class UpdateOrganizationForm extends Component
     }
 
     /**
-     * Update the user's profile information.
+     * Update the user's organization information.
      *
      * @param  \Laravel\Fortify\Contracts\UpdatesUserOrganizationInformation  $updater
      * @return void
