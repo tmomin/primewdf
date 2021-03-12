@@ -54,6 +54,11 @@ class UpdateStoreForm extends Component
         // return redirect()->route('organization.show');
     }
 
+    public function manageStore($storeId)
+    {
+        return redirect()->route('store.show', compact('storeId'));
+    }
+
     public function confirmStoreRemoval($storeId)
     {
         $this->confirmingStoreRemoval = true;

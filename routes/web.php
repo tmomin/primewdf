@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\StoreController;
 use App\Http\Livewire\Organization\Show;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/user/organization', [OrganizationController::class, 'show'])->name('organization.show');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/user/store', [StoreController::class, 'show'])->name('store.show');
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/user/organization', Show::class)->name('organization.show');

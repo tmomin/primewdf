@@ -92,32 +92,50 @@
                 <!-- Store List -->
                 <x-slot name="content">
                     <div class="space-y-6">
-                        @foreach ($organization->stores->sortBy('name') as $store)
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center">
-                                    {{-- <img class="w-8 h-8 rounded-full" src="{{ $user->profile_photo_url }}" alt="{{ $user->name }}"> --}}
-                                    <div class="ml-4">{{ $store->name }}</div>
-                                </div>
-
-                                <div class="flex items-center">
-                                    {{-- <!-- Manage Team Member Role -->
-                                    @if (Gate::check('addTeamMember', $team) && Laravel\Jetstream\Jetstream::hasRoles())
-                                        <button class="ml-2 text-sm text-gray-400 underline" wire:click="manageRole('{{ $user->id }}')">
-                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                        </button>
-                                    @elseif (Laravel\Jetstream\Jetstream::hasRoles())
-                                        <div class="ml-2 text-sm text-gray-400">
-                                            {{ Laravel\Jetstream\Jetstream::findRole($user->membership->role)->name }}
-                                        </div>
-                                    @endif --}}
-
+                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                            <table class="min-w-full divide-y divide-gray-200">
+                              <thead class="bg-gray-50">
+                                <tr>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Store ID
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Store Name
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     
-                                        <button class="cursor-pointer ml-6 text-sm text-red-500" wire:click="confirmStoreRemoval('{{ $store->id }}')">
-                                            {{ __('Remove') }}
-                                        </button>
-                                </div>
-                            </div>
-                        @endforeach
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Role
+                                  </th>
+                                  <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">Edit</span>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody class="bg-white divide-y divide-gray-200">
+                                  @foreach ($organization->stores->sortBy('name') as $store)
+                                  <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                      {{ $store->id }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                      {{ $store->name }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                      
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="manageStore('{{ $store->id }}')">Manage</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                      <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="confirmStoreRemoval('{{ $store->id }}')">Remove</a>
+                                    </td>
+                                  </tr>
+                                  @endforeach
+                              </tbody>
+                            </table>
+                          </div>
                     </div>
                 </x-slot>
             </x-jet-action-section>
