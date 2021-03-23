@@ -7,17 +7,16 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            FUCK
-            @livewire('organization.update-organization-form')
+            @livewire('store.update-store-form')
             <x-jet-section-border />
 
-            @if ($user->organization_id)
+            {{-- @if ($user->organization_id)
                 <div class="mt-10 sm:mt-0">
-                    @livewire('organization.update-store-form')
+                    @livewire('store.update-store-form')
                 </div>
 
                 <x-jet-section-border />
-            @endif
+            @endif --}}
             {{-- @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
                 <div class="mt-10 sm:mt-0">
                     @livewire('profile.update-password-form')

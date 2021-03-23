@@ -14,7 +14,7 @@ class UpdateStoreForm extends Component
         'name' => '',
     ];
 
-    public $stores;
+    // public $stores;
     public $organization;
     public $storeIdBeingRemoved = null;
 
