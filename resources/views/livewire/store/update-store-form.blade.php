@@ -8,16 +8,7 @@
     </x-slot>
 
     <x-slot name="form">
-        {{-- <!-- Organization Info -->
-        @if ($state->organization_id = NULL)
-            <!-- Organization Name -->
-            <div class="col-span-6 sm:col-span-4">
-                <x-jet-label for="organization_name" value="{{ __('Organazation Name') }}" />
-                <x-jet-input id="organization_name" type="text" class="mt-1 block w-full" wire:model.defer="state.organization.name" autocomplete="name" />
-                <x-jet-input-error for="organization_name" class="mt-2" />
-            </div>
-        @endif --}}
-        <!-- Organization Name -->
+        <!-- Store Name -->
         <div class="col-span-6 sm:col-span-4">
             <x-jet-input id="store_id" type="hidden" wire:model.defer="store.store_id"/>
             <x-jet-label for="store_name" value="{{ __('Store Name') }}" />
