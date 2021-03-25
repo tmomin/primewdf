@@ -9,6 +9,9 @@
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             @livewire('store.update-store-form')
             <x-jet-section-border />
+            
+            @livewire('store.update-store-machines-form')
+            <x-jet-section-border />
 
             {{-- @if ($user->organization_id)
                 <div class="mt-10 sm:mt-0">
