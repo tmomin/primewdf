@@ -10,10 +10,15 @@
     <x-slot name="form">
         <!-- Store Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-input id="store_id" type="hidden" wire:model.defer="store.store_id"/>
+            <x-jet-input id="store_id" name="store_id" type="hidden" wire:model.defer="store.store_id"/>
             <x-jet-label for="name" value="{{ __('Store Name') }}" />
             <x-jet-input id="name" name="store_name" type="text" class="mt-1 block w-full" wire:model.defer="store.name" autocomplete="off" />
             <x-jet-input-error for="name" class="mt-2" />
+        </div>
+        <div class="col-span-6 sm:col-span-2">
+            <x-jet-label for="phone" value="{{ __('Phone #') }}" />
+            <x-jet-input id="phone" name="phone" type="text" class="mt-1 block w-full" wire:model.defer="store.phone" autocomplete="on" />
+            <x-jet-input-error for="phone" class="mt-2" />
         </div>
         <div class="col-span-6 sm:col-span-6">
             <x-jet-label for="address" value="{{ __('Address') }}" />

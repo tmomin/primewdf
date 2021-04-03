@@ -73,39 +73,62 @@
                     </x-jet-action-message>
 
                     <x-jet-button>
-                        {{ __('Add') }}
+                        {{ __('Save') }}
                     </x-jet-button>
                 </x-slot>
             </x-jet-form-section>
         </div>
     {{-- @endif --}}
 
-    {{-- @if ($organization->stores->isNotEmpty())
+    @if ($machines->isNotEmpty())
         <x-jet-section-border />
 
-        <!-- Manage Stores -->
+        <!-- Manage Machines -->
         <div class="mt-10 sm:mt-0">
             <x-jet-action-section>
                 <x-slot name="title">
-                    {{ __('Stores') }}
+                    {{ __('Machines') }}
                 </x-slot>
 
                 <x-slot name="description">
                     {{ __('All of the stores that are part of this organization.') }}
                 </x-slot>
 
-                <!-- Store List -->
+                <!-- Machine List -->
                 <x-slot name="content">
                     <div class="space-y-6">
                         <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                            <table class="min-w-full divide-y divide-gray-200">
+                            <x-table>
+                                <x-slot name="head">
+                                    <x-table.heading sortable wire:click="sortBy('id')">Machine ID</x-table.heading>
+                                    <x-table.heading sortable wire:click="sortBy('name')">Machine Name</x-table.heading>
+                                    <x-table.heading sortable wire:click="sortBy('type')">Machine Type</x-table.heading>
+                                    <x-table.heading></x-table.heading>
+                                    <x-table.heading></x-table.heading>
+                                </x-slot>
+                                <x-slot name="body">
+                                    @foreach ($machines as $machine)
+                                    <x-table.row>
+                                        <x-table.cell>{{ $machine->id }}</x-table.cell>
+                                        <x-table.cell>{{ $machine->name }}</x-table.cell>
+                                        <x-table.cell>{{ $machine->type }}</x-table.cell>
+                                        <x-table.cell><a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="manageMachine('{{ $machine->id }}')">Manage</a></x-table.cell>
+                                        <x-table.cell><a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="confirmingMachineRemoval('{{ $machine->id }}')">Remove</a></x-table.cell>
+                                    </x-table.row>
+                                    @endforeach
+                                </x-slot>
+                            </x-table>
+                            {{-- <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Store ID
+                                    Machine ID
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Store Name
+                                    Machine Name
+                                  </th>
+                                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Machine Type
                                   </th>
                                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     
@@ -119,33 +142,36 @@
                                 </tr>
                               </thead>
                               <tbody class="bg-white divide-y divide-gray-200">
-                                  @foreach ($organization->stores->sortBy('name') as $store)
+                                  @foreach ($store->machines->sortBy('id') as $machine)
                                   <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                      {{ $store->id }}
+                                      {{ $machine->id }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                      {{ $store->name }}
+                                      {{ $machine->name }}
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {{ $machine->type }}
+                                      </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                       
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="manageStore('{{ $store->id }}')">Manage</a>
+                                        <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="manageMachine('{{ $machine->id }}')">Manage</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                      <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="confirmStoreRemoval('{{ $store->id }}')">Remove</a>
+                                      <a href="#" class="text-indigo-600 hover:text-indigo-900" wire:click="confirmingMachineRemoval('{{ $machine->id }}')">Remove</a>
                                     </td>
                                   </tr>
                                   @endforeach
                               </tbody>
-                            </table>
+                            </table> --}}
                           </div>
                     </div>
                 </x-slot>
             </x-jet-action-section>
         </div>
-    @endif --}}
+    @endif
 
     {{-- @if ($team->teamInvitations->isNotEmpty() && Gate::check('addTeamMember', $team))
         <x-jet-section-border />
@@ -306,24 +332,24 @@
         </x-slot>
     </x-jet-confirmation-modal> --}}
 
-    <!-- Remove Store Confirmation Modal -->
-    {{-- <x-jet-confirmation-modal wire:model="confirmingStoreRemoval">
+    <!-- Remove Machine Confirmation Modal -->
+    <x-jet-confirmation-modal wire:model="confirmingMachineRemoval">
         <x-slot name="title">
-            {{ __('Remove Store') }}
+            {{ __('Remove Machine') }}
         </x-slot>
 
         <x-slot name="content">
-            {{ __('Are you sure you would like to remove this store from the organzition?') }}
+            {{ __('Are you sure you would like to remove this machine from the store?') }}
         </x-slot>
 
         <x-slot name="footer">
-            <x-jet-secondary-button wire:click="$toggle('confirmingStoreRemoval')" wire:loading.attr="disabled">
+            <x-jet-secondary-button wire:click="$toggle('confirmingMachineRemoval')" wire:loading.attr="disabled">
                 {{ __('Cancel') }}
             </x-jet-secondary-button>
 
-            <x-jet-danger-button class="ml-2" wire:click="removeStore('{{ $storeIdBeingRemoved }}')" wire:loading.attr="disabled">
+            <x-jet-danger-button class="ml-2" wire:click="removeMachine('{{ $machineIdBeingRemoved }}')" wire:loading.attr="disabled">
                 {{ __('Remove') }}
             </x-jet-danger-button>
         </x-slot>
-    </x-jet-confirmation-modal> --}}
+    </x-jet-confirmation-modal>
 </div>

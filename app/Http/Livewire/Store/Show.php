@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Store;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Store;
 
 class Show extends Component
 {

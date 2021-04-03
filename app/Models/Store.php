@@ -17,10 +17,20 @@ class Store extends Model
     protected $fillable = [
         'name',
         'organization_id',
+        'address',
+        'city',
+        'state',
+        'zipcode',
+        'phone',
     ];
 
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function machines()
+    {
+        return $this->hasMany(Machine::class);
     }
 }

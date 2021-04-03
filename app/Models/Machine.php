@@ -14,4 +14,9 @@ class Machine extends Model
         'type',
         'store_id',
     ];
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }
