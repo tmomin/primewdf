@@ -97,12 +97,12 @@
                 <!-- Machine List -->
                 <x-slot name="content">
                     <div class="space-y-6">
-                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                        <div class="flex-col space-y-4 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                             <x-table>
                                 <x-slot name="head">
-                                    <x-table.heading sortable wire:click="sortBy('id')">Machine ID</x-table.heading>
-                                    <x-table.heading sortable wire:click="sortBy('name')">Machine Name</x-table.heading>
-                                    <x-table.heading sortable wire:click="sortBy('type')">Machine Type</x-table.heading>
+                                    <x-table.heading sortable wire:click="sortBy('id')" :direction="$sortField === 'id' ? $sortDirection : null">Machine ID</x-table.heading>
+                                    <x-table.heading sortable wire:click="sortBy('name')" :direction="$sortField === 'name' ? $sortDirection : null">Machine Name</x-table.heading>
+                                    <x-table.heading sortable wire:click="sortBy('type')" :direction="$sortField === 'type' ? $sortDirection : null">Machine Type</x-table.heading>
                                     <x-table.heading></x-table.heading>
                                     <x-table.heading></x-table.heading>
                                 </x-slot>
@@ -118,6 +118,10 @@
                                     @endforeach
                                 </x-slot>
                             </x-table>
+
+                            <div>
+                                {{ $machines->links() }}
+                            </div>
                             {{-- <table class="min-w-full divide-y divide-gray-200">
                               <thead class="bg-gray-50">
                                 <tr>

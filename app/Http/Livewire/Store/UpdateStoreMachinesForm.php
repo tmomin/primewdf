@@ -6,28 +6,34 @@ use App\Models\Machine;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\Request;
 use App\Models\Store;
+use Livewire\WithPagination;
 
 class UpdateStoreMachinesForm extends Component
 {
+    use WithPagination;
+    
     public $addMachineForm = [
         'machine_id' => null,
     ];
 
     public $store;
-    public $machines;
+    public $storeId;
+    // public $machines;
     public $machineIdBeingRemoved = null;
     public $confirmingMachineRemoval = false;
-    public $sortField;
+    public $sortField = 'id';
     public $sortDirection = 'asc';
 
     public function mount(Request $request)
     {
-        dd(Machine::search('W01')->get());
+        $this->storeId = $request->storeId;
+        
+        // dd(Machine::search('W01')->get());
         
         // $this->machines = Machine::search('store_id', $request->storeId)->orderBy($this->sortField, $this->sortDirection)->paginate(10);
 
-        dd($this->machines);
-        
+        // dd($this->machines);
+
         $this->store = Store::find($request->storeId);
         // $this->machines = $this->store->machines;
         
@@ -38,6 +44,12 @@ class UpdateStoreMachinesForm extends Component
 
     public function sortBy($field)
     {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortDirection = 'asc';
+        }
+        
         $this->sortField = $field;
     }
 
@@ -97,20 +109,22 @@ class UpdateStoreMachinesForm extends Component
 
         $machineId = null;
 
-        $this->store = $this->store->fresh();
+        // $this->store = $this->store->fresh();
     }
     
-    public function render(Request $request)
+    public function render()
     {
         // dd($this->store);
 
         // $machines = Machine::where('store_id', $request->storeId)->get();
 
-        if ($this->sortField == null)
-        {
-            $this->sortField = "id";
-        }
-        
-        return view('livewire.store.update-store-machines-form');
+        // if ($this->sortField == null)
+        // {
+        //     $this->sortField = "id";
+        // }
+
+        return view('livewire.store.update-store-machines-form', [
+            'machines' => Machine::search('store_id', $this->storeId)->orderBy($this->sortField, $this->sortDirection)->paginate(5),
+        ]);
     }
 }
