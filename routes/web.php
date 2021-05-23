@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StoreController;
-use App\Http\Livewire\Organization\Show;
+use App\Http\Controllers\PrimeWDFController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [PrimeWDFController::class, 'showDashboard'])->name('dashboard');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/user/organization', [OrganizationController::class, 'show'])->name('organization.show');
 
