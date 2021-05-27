@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\PrimeWDFController;
@@ -22,8 +23,10 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', [PrimeWDFController::class, 'showDashboard'])->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/user/organization', [OrganizationController::class, 'show'])->name('organization.show');
+Route::middleware(['auth:sanctum', 'verified'])->get('/organization', [OrganizationController::class, 'show'])->name('organization.show');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/user/store', [StoreController::class, 'show'])->name('store.show');
+Route::middleware(['auth:sanctum', 'verified'])->get('/store', [StoreController::class, 'show'])->name('store.show');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/item', [ItemController::class, 'show'])->name('item.show');
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/user/organization', Show::class)->name('organization.show');
