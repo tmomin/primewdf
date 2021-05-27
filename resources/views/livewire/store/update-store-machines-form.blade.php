@@ -29,7 +29,12 @@
                     </div>
                     <div class="col-span-6 sm:col-span-3">
                         <x-jet-label for="machine_type" value="{{ __('Machine Type') }}" />
-                        <x-jet-input id="machine_type" type="text" class="mt-1 block w-full" wire:model.defer="addMachineForm.type" />
+                        <x-input.select label="Machine Type" id="machine_type" class="mt-1 block w-full" wire:model.defer="addMachineForm.type">
+                            <option>Select</option>
+                            <option>Dryer</option>
+                            <option>Washer</option>
+                        </x-input.select>
+                        {{-- <x-jet-input id="machine_type" type="text" class="mt-1 block w-full" wire:model.defer="addMachineForm.type" /> --}}
                         <x-jet-input-error for="machine_type" class="mt-2" />
                     </div>
 

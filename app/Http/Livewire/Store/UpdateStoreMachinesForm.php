@@ -58,7 +58,7 @@ class UpdateStoreMachinesForm extends Component
         $this->resetErrorBag();
 
         $updater = $this->addMachineForm;
-                
+                        
         Machine::updateOrCreate(['id' => $updater['machine_id']], [
             'name' => $updater['name'],
             'type' => $updater['type'],
@@ -124,7 +124,7 @@ class UpdateStoreMachinesForm extends Component
         // }
 
         return view('livewire.store.update-store-machines-form', [
-            'machines' => Machine::search('store_id', $this->storeId)->orderBy($this->sortField, $this->sortDirection)->paginate(5),
+            'machines' => Machine::search('store_id', $this->storeId)->orderBy($this->sortField, $this->sortDirection)->paginate(10),
         ]);
     }
 }
